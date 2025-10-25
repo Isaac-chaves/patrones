@@ -12,8 +12,8 @@ import java.util.Optional;
  * @author jprod
  */
 public class ServicioCatalogo {
-    private final RepositorioCategorias categoriaRepo;
-    private final RepositorioProductos productoRepo;
+    final RepositorioCategorias categoriaRepo;
+    final RepositorioProductos productoRepo;
 
     public ServicioCatalogo(RepositorioCategorias cr, RepositorioProductos pr){
         this.categoriaRepo = cr; this.productoRepo = pr;

@@ -16,8 +16,8 @@ import java.util.Optional;
  * @author jprod
  */
 public class ServicioFacturacion {
-    private final RepositorioFacturas repo;
-    private final ServicioNotificaciones notificador;
+    public final RepositorioFacturas repo;
+    public final ServicioNotificaciones notificador;
 
     public ServicioFacturacion(RepositorioFacturas r, ServicioNotificaciones n){
         this.repo=r; this.notificador=n;
