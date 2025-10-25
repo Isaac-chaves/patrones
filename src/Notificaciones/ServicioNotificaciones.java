@@ -5,6 +5,7 @@
 package Notificaciones;
 
 import Facturacion.Factura;
+import Facturacion.FacturaObserver;
 import Notificaciones.Notificacion;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
  *
  * @author jprod
  */
-public class ServicioNotificaciones {
+public class ServicioNotificaciones implements FacturaObserver {
     private int seq = 1;
     private final List<Notificacion> historial;
 
@@ -48,6 +49,11 @@ public class ServicioNotificaciones {
         }
         historial.add(n);
         return n;
+    }
+
+    @Override
+    public void actualizar(Factura factura) {
+ System.out.println("📨 Enviando notificación automática: La factura #" + factura.getNumero() +" ha cambiado de estado a " + factura.getEstado());
     }
 
 }

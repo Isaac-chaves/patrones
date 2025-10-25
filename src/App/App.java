@@ -41,6 +41,7 @@ public class App {
         ServicioClientes servClie = new ServicioClientes(repoClie);
         ServicioNotificaciones servNoti = new ServicioNotificaciones();
         ServicioFacturacion servFact = new ServicioFacturacion(repoFact, servNoti);
+        servFact.agregarObservador(servNoti);
 
         seedDatos(servCata, servClie);
 
@@ -450,4 +451,6 @@ public class App {
         System.out.print(msg + " (s/n): ");
         return sc.nextLine().trim().equalsIgnoreCase("s");
     }
+    
+    
 }
