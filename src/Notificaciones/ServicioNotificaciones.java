@@ -14,14 +14,18 @@ import java.util.List;
  * @author jprod
  */
 public class ServicioNotificaciones {
+
     private int seq = 1;
     private final List<Notificacion> historial;
 
     /**
      * Iterator
-     * @return 
+     *
+     * @return
      */
-    public List<Notificacion> getHistorial(){ return historial; }
+    public List<Notificacion> getHistorial() {
+        return historial;
+    }
 
     public ServicioNotificaciones() {
         historial = new ArrayList<>();
@@ -29,25 +33,34 @@ public class ServicioNotificaciones {
 
     /**
      * Simulación de envío por canal
+     *
      * @param factura
      * @param canal
-     * @return 
+     * @return
      */
-    public Notificacion enviar(Factura factura, CanalNotificacion canal){
+    public Notificacion enviar(Factura factura, CanalNotificacion canal) {
         Notificacion n = new Notificacion(seq++, factura, canal);
         try {
-            switch (canal){
-                case EMAIL -> System.out.println("[EMAIL] Enviando a " + factura.getCliente().getEmail());
-                case SMS -> System.out.println("[SMS] Enviando a " + factura.getCliente().getTelefono());
-                case WHATSAPP -> System.out.println("[WA] Enviando a " + factura.getCliente().getTelefono());
-                case PANTALLA -> System.out.println("[POPUP] Factura #" + factura.getNumero());
-            }
+            EstrategiaNotificacion estrategia = obtenerEstrategia(canal);
+            estrategia.enviar(factura);
             n.setEstado(EstadoNotificacion.ENVIADA);
-        } catch (Exception e){
+        } catch (Exception e) {
             n.setEstado(EstadoNotificacion.FALLIDA);
         }
         historial.add(n);
         return n;
     }
 
-}
+    private EstrategiaNotificacion obtenerEstrategia(CanalNotificacion canal) {
+        return switch (canal) {
+            case EMAIL ->
+                new NotificacionEmail();
+            case SMS ->
+                new NotificacionSMS();
+            case WHATSAPP ->
+                new NotificacionWhatsApp();
+            case PANTALLA ->
+                new NotificacionPantalla();
+        };
+    }
+} 

@@ -345,7 +345,7 @@ public class App {
                 try {
                     System.out.print("N° factura: "); int num=Integer.parseInt(sc.nextLine());
                     if (fact.obtenerFactura(num).isEmpty()){ System.out.println(ERR + "Factura no existe."); break; }
-                    var canales = List.of(CanalNotificacion.EMAIL, CanalNotificacion.SMS, CanalNotificacion.PANTALLA);
+                    var canales = List.of(CanalNotificacion.EMAIL, CanalNotificacion.SMS, CanalNotificacion.PANTALLA,CanalNotificacion.WHATSAPP);
                     fact.emitirFactura(num, canales);
                     System.out.println(OK + "Factura emitida.");
                     fact.obtenerFactura(num).ifPresent(System.out::println);
@@ -451,3 +451,4 @@ public class App {
         return sc.nextLine().trim().equalsIgnoreCase("s");
     }
 }
+ 
