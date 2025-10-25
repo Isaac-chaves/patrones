@@ -16,8 +16,12 @@ import Catalogo.Producto;
 import Catalogo.RepositorioCategorias;
 import Catalogo.RepositorioProductos;
 import Catalogo.ServicioCatalogo;
-import java.io.UnsupportedEncodingException;
+import Catalogo.ProxyServicioCatalogo;
+import Proxy.ProxyServicioClientes;
+import Proxy.ProxyServicioFacturacion;
+import Proxy.ProxyServicioNotificaciones;
 
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -42,6 +46,12 @@ public class App {
         ServicioNotificaciones servNoti = new ServicioNotificaciones();
         ServicioFacturacion servFact = new ServicioFacturacion(repoFact, servNoti);
         servFact.agregarObservador(servNoti);
+
+        // Servicios proxy
+        ServicioNotificaciones servNoti = new ProxyServicioNotificaciones(servNotiReal);
+        ServicioCatalogo servCata = new ProxyServicioCatalogo(servCataReal);
+        ServicioClientes servClie = new ProxyServicioClientes(servClieReal);
+        ServicioFacturacion servFact = new ProxyServicioFacturacion(servFactReal);
 
         seedDatos(servCata, servClie);
 
@@ -346,7 +356,7 @@ public class App {
                 try {
                     System.out.print("N° factura: "); int num=Integer.parseInt(sc.nextLine());
                     if (fact.obtenerFactura(num).isEmpty()){ System.out.println(ERR + "Factura no existe."); break; }
-                    var canales = List.of(CanalNotificacion.EMAIL, CanalNotificacion.SMS, CanalNotificacion.PANTALLA);
+                    var canales = List.of(CanalNotificacion.EMAIL, CanalNotificacion.SMS, CanalNotificacion.PANTALLA,CanalNotificacion.WHATSAPP);
                     fact.emitirFactura(num, canales);
                     System.out.println(OK + "Factura emitida.");
                     fact.obtenerFactura(num).ifPresent(System.out::println);
@@ -454,3 +464,4 @@ public class App {
     
     
 }
+ 
