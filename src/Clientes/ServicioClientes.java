@@ -11,7 +11,7 @@ import java.util.List;
  * @author jprod
  */
 public class ServicioClientes {
-    private final RepositorioClientes repo;
+    public final RepositorioClientes repo;
     
     public ServicioClientes(RepositorioClientes r){ 
         this.repo=r; 

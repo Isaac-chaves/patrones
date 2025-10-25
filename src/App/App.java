@@ -16,8 +16,12 @@ import Catalogo.Producto;
 import Catalogo.RepositorioCategorias;
 import Catalogo.RepositorioProductos;
 import Catalogo.ServicioCatalogo;
-import java.io.UnsupportedEncodingException;
+import Catalogo.ProxyServicioCatalogo;
+import Proxy.ProxyServicioClientes;
+import Proxy.ProxyServicioFacturacion;
+import Proxy.ProxyServicioNotificaciones;
 
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -37,10 +41,17 @@ public class App {
         RepositorioClientes repoClie  = new RepositorioClientes();
         RepositorioFacturas repoFact  = new RepositorioFacturas();
 
-        ServicioCatalogo servCata = new ServicioCatalogo(repoCate, repoProd);
-        ServicioClientes servClie = new ServicioClientes(repoClie);
-        ServicioNotificaciones servNoti = new ServicioNotificaciones();
-        ServicioFacturacion servFact = new ServicioFacturacion(repoFact, servNoti);
+        // Servicios reales
+        ServicioCatalogo servCataReal = new ServicioCatalogo(repoCate, repoProd);
+        ServicioClientes servClieReal = new ServicioClientes(repoClie);
+        ServicioNotificaciones servNotiReal = new ServicioNotificaciones();
+        ServicioFacturacion servFactReal = new ServicioFacturacion(repoFact, servNotiReal);
+
+        // Servicios proxy
+        ServicioNotificaciones servNoti = new ProxyServicioNotificaciones(servNotiReal);
+        ServicioCatalogo servCata = new ProxyServicioCatalogo(servCataReal);
+        ServicioClientes servClie = new ProxyServicioClientes(servClieReal);
+        ServicioFacturacion servFact = new ProxyServicioFacturacion(servFactReal);
 
         seedDatos(servCata, servClie);
 
